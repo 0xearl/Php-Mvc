@@ -6,6 +6,6 @@
     <title>Another Test</title>
 </head>
 <body>
-    Another Test
+    Hello <?php echo $_GET['name'] ?? ''; ?>
 </body>
 </html>

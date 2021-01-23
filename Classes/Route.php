@@ -12,6 +12,8 @@ class Route {
 	const DEFAULT_CLASS = 'Index';
 	const DEFAULT_METHOD = 'index';
 
+	protected $args = [];
+	
 	function __construct() {
 		$this->uri = explode('/', substr($_SERVER['REQUEST_URI'], 1));
 	}
@@ -32,7 +34,7 @@ class Route {
 			}
 
 			for($ctr = 2; $ctr < count($this->uri); $ctr++){
-				array_push($this->arguments, $this->uri[$ctr]);
+				array_push($this->args, $this->uri[$ctr]);
 			}
 		}else{
 			$setClass = self::DEFAULT_CLASS;
@@ -52,6 +54,6 @@ class Route {
 			$setMethod = self::DEFAULT_METHOD;
 		}
 
-		call_user_func(array($class, $setMethod), $this->arguments);
+		call_user_func(array($class, $setMethod), $this->args);
 	}
 }
