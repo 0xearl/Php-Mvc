@@ -1,0 +1,54 @@
+<?php 
+/**
+ * @author Earl Sabalo
+ * 
+ * This Class Handles The Connection to the database
+ * 
+ * @throws PDOException
+ */
+
+namespace Classes;
+
+class Db {
+
+
+    /**
+     * @var string $dbname Database name.
+     */
+    private $dbname = '';
+
+    /**
+     * @var string $host Database Host.
+     */
+    private $host = '';
+
+     /**
+     * @var string $user Database User.
+     */
+    private $user = '';
+    
+     /**
+     * @var string $pass Database Password.
+     */
+    private $pass = '';
+
+    /**
+     * @var string $charset Database Character Set
+     */
+    private $charset = '';
+    
+    function __construct(){
+        $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
+        
+        $options = [
+            PDO::ATTR_ERRMODE               =>  PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE    =>  PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES      =>  false,
+        ];
+        try {
+            $connection = new PDO($dsn, $user, $pass, $options);
+        }catch(\PDOException $e){
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
+}
