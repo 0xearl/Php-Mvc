@@ -1,5 +1,4 @@
 <?php
-include_once('../Classes/Template.php'); 
 /**
  * @author Earl Sabalo
  * 
