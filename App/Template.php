@@ -1,5 +1,5 @@
 <?php 
-
+namespace App;
 /**
  * @author Earl Sabalo
  * 
@@ -11,7 +11,7 @@ class Template {
     /**
      * @internal VIEW_PATH
      */
-    const VIEW_PATH = './Views/';
+    const VIEW_PATH = './App/Views/';
     
     /**
      * @internal TEMPLATE_EXTENSION
@@ -21,7 +21,7 @@ class Template {
 
     public function view($filename) {
         if(!file_exists(self::VIEW_PATH . $filename . self::TEMPLATE_EXTENSION)){
-            throw new Exception('Error View Doesn\'t Exist.');
+            throw new App\Exeptions\TemplateException('Error View Doesn\'t Exist.');
         }
         
         return require_once(self::VIEW_PATH . $filename . self::TEMPLATE_EXTENSION);

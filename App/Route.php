@@ -1,5 +1,5 @@
 <?php 
-
+namespace App;
 /**
  * @author Earl Sabalo
  * 
@@ -8,7 +8,7 @@
 
 class Route {
 
-	const CONTROLLER_PATH = './Controllers/';
+	const CONTROLLER_PATH = './App/Controllers/';
 	const DEFAULT_CLASS = 'Index';
 	const DEFAULT_METHOD = 'index';
 

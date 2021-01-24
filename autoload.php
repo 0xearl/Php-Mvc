@@ -6,5 +6,10 @@
  */
 
 spl_autoload_register(function($class_name) {
-    include_once("Classes/{$class_name}.php");
- });
+    try {
+        $class = str_replace('\\', '/', $class_name);
+        require_once("$class.php");
+    }catch(Exception $e){
+        throw new Exception($e->getCode());
+    }
+});

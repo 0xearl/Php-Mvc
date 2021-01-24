@@ -1,4 +1,5 @@
 <?php 
+namespace App;
 
 /**
  * @author Earl Sabalo
@@ -12,14 +13,14 @@
     /**
      * @internal MODEL_PATH
      */
-    const MODEL_PATH = './Models/';
+    const MODEL_PATH = './App/Models/';
 
     /**
      * This Function loads the models for every controllers
      * 
      * @param string $modelName Name of The Model;
      * 
-     * @throws \Exception Exception.
+     * @throws App\Exceptions Exception.
      * 
      * @return ojbect Models Object
      */
@@ -27,7 +28,7 @@
          if(file_exists(self::MODEL_PATH . $modelName . '.php')){
              return require_once(self::MODEL_PATH . $modelName . '.php');
          }else{
-             throw new \Exception('Model Not Found');
+             throw new App\Exceptions\ControllerException('Model Not Found');
          }
      }
  }

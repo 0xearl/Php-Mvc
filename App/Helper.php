@@ -1,5 +1,5 @@
 <?php 
-
+namespace App;
 class Helper {
     public function ViewPath(){
         return './Views/';

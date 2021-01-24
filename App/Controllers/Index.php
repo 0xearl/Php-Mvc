@@ -1,4 +1,7 @@
 <?php
+use App\Template;
+use App\Controller;
+use App\Models\TestModel;
 /**
  * @author Earl Sabalo
  * 
@@ -8,7 +11,6 @@
  class Index extends Controller {
      function __construct(){
          $this->template = new Template();
-         $this->loadModel('TestModel');
      }
      public function index(){
          $this->template->view('index');

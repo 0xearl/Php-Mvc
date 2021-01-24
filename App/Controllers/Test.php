@@ -1,4 +1,7 @@
 <?php 
+use App\Template;
+use App\Controller;
+use App\Models\TestModel;
 
 Class Test {
     function __construct(){
