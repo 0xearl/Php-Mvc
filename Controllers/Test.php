@@ -3,9 +3,10 @@
 Class Test {
     function __construct(){
         $this->template = new Template();
+        $this->model = new TestModel();
     }
     
     public function index(){
-        return $this->template->view('test');
+        return $this->model->test();
     }
 }

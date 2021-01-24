@@ -6,6 +6,8 @@
  * This is a test Model.
  */
 
- class TestModel Extends Db {
-     
+ class TestModel Extends Model {
+     public function test() {
+        return 'test';
+     }
  }
