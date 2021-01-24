@@ -23,12 +23,12 @@ class Db {
      /**
      * @var string $user Database User.
      */
-    private $user = 'earl';
+    private $user = 'root';
     
      /**
      * @var string $pass Database Password.
      */
-    private $pass = 'katty812018';
+    private $pass = '';
 
     /**
      * @var string $charset Database Character Set
