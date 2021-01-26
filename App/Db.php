@@ -47,6 +47,7 @@ class Db {
 
         try {
             $connection = new \PDO($dsn, $this->user, $this->pass, $options);
+            return $connection;
         }catch(\PDOException $e){
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
