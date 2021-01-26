@@ -1,21 +1,43 @@
 <?php 
 namespace App;
+use App\WebRouter;
+use \Closure;
 /**
  * @author Earl Sabalo
  * 
  * This Class Handles The Web Routing.
  */
 
-class Route {
+class Route extends WebRouter {
 
-	const CONTROLLER_PATH = './App/Controllers/';
-	const DEFAULT_CLASS = 'Index';
-	const DEFAULT_METHOD = 'index';
-
-	protected $args = [];
+    /**
+     * @internal string CONTROLLER_PATH
+     */
+	private const CONTROLLER_PATH = './App/Controllers/';
+    
+    /**
+     * @internal string DEFAULT_CLASS Default Controller Class To instantiate 
+     */
+    private const DEFAULT_CLASS = 'Index';
+    
+    /**
+     * @internal string DEFAULT_METHOD Default Method To Use In That Said Controller Class.
+     */
+    private const DEFAULT_METHOD = 'index';
+    
+    /**
+     * @var array $args contains arguments passed in uri
+     */
+    protected $args = [];
+    
+    /**
+     * @var array $uri the full request uri.
+     */
+    public $uri;
 	
 	function __construct() {
-		$this->uri = explode('/', substr($_SERVER['REQUEST_URI'], 1));
+        parent::__construct();
+        $this->uri = explode('/', substr($_SERVER['REQUEST_URI'], 1));
 	}
 
 	public function loadRoutes(){
@@ -37,8 +59,8 @@ class Route {
 				array_push($this->args, $this->uri[$ctr]);
 			}
 		}else{
-			$setClass = self::DEFAULT_CLASS;
-		}
+            $setClass = self::DEFAULT_CLASS;
+        }
 
 		//checks if the controller exists in the CONTROLLER_PATH
 		if(!file_exists(self::CONTROLLER_PATH . $setClass . '.php')){
@@ -53,7 +75,10 @@ class Route {
 		if(empty($setMethod) || !method_exists($class, $setMethod)){
 			$setMethod = self::DEFAULT_METHOD;
 		}
-
-		call_user_func(array($class, $setMethod), $this->args);
-	}
+        if(array_key_exists($this->uri[0], $this->routes)){
+            echo call_user_func($this->routes[$this->uri[0]]);
+            die;
+        }
+		return call_user_func(array($class, $setMethod), $this->args);
+    }
 }
