@@ -26,14 +26,9 @@ class Route extends WebRouter {
     private const DEFAULT_METHOD = 'index';
     
     /**
-     * @var array $args contains arguments passed in uri
-     */
-    protected $args = [];
-    
-    /**
      * @var array $uri the full request uri.
      */
-    public $uri;
+    protected $uri;
 	
 	function __construct() {
         parent::__construct();
@@ -41,24 +36,12 @@ class Route extends WebRouter {
 	}
 
 	public function loadRoutes(){
-		if(count($this->uri) > 0 && !empty($this->uri[0])){
-			$setClass = ucfirst(strtolower($this->uri[0])); //refers to the Controller to use
-			$setMethod = $this->uri[1] ?? self::DEFAULT_METHOD; //refers to what method in that controller to use
+		if(count($this->uri) > 0 && !empty($this->uri[0])){  
 
-			//This line handles the arguments being passed
-			//ex: ?abc=asd
-			//This Passes all the argument given to the controller and method.
-
-			if(strrpos($setMethod, '?')){
-				$position = strrpos($setMethod, '?');
-				$newMethod = substr($setMethod, 0, $position);
-				$setMethod = str_replace('/', '', $newMethod);
-			}
-
-			for($ctr = 2; $ctr < count($this->uri); $ctr++){
-				array_push($this->args, $this->uri[$ctr]);
-			}
-		}else{
+            $setClass = ucfirst(strtolower($this->uri[0])); //refers to the Controller to use
+            $setMethod = $this->uri[1] ?? self::DEFAULT_METHOD; //refers to what method in that controller to use
+        
+        }else{
             $setClass = self::DEFAULT_CLASS;
         }
 
