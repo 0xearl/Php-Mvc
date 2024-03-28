@@ -37,22 +37,26 @@ class Route extends WebRouter {
 
     protected $request_method;
 	
-	function __construct() {
+	function __construct() 
+    {
         parent::__construct();
         $this->uri = explode( '/', substr( $_SERVER['REQUEST_URI'], 1) );
+        $this->uri = preg_replace('/\?.*/', '', $this->uri);
         $this->args = new Request();
         $this->request_method = $_SERVER['REQUEST_METHOD'];
 	}
 
-	public function loadRoutes(){
+	public function loadRoutes()
+    {
 
-		if( count($this->uri) > 0 && !empty( $this->uri[0] ) ){  
+		if ( count($this->uri) > 0 && !empty( $this->uri[0] ) ){  
 
             $setClass = ucfirst(strtolower($this->uri[0])); //refers to the Controller to use
             $setMethod = $this->uri[1] ?? self::DEFAULT_METHOD; //refers to what method in that controller to use
         
-        }else{
+        } else {
             $setClass = self::DEFAULT_CLASS;
+            $setMethod = self::DEFAULT_METHOD;
         }
 
 		//checks if the controller exists in the CONTROLLER_PATH
@@ -62,20 +66,35 @@ class Route extends WebRouter {
 
 		require_once(self::CONTROLLER_PATH . $setClass . '.php');
 
-		$class = new $setClass();
+        $test = "App\\Controllers\\" . $setClass;
+
+        $class = new $test;
+
+        $callable = [$class, $setMethod];
+
+        $callable = is_callable($callable);
 
 		//checks if the method supplied is empty or doesn't exists in the said Controller
-		if(empty($setMethod) || !method_exists($class, $setMethod)){
+		if (empty($setMethod) || !method_exists( $class, $setMethod ) ) {
 			$setMethod = self::DEFAULT_METHOD;
 		}
+        
 
-        if(array_key_exists($this->uri[0], $this->routes[$this->request_method])){
+        if( array_key_exists( $this->uri[0], $this->routes[$this->request_method] ) ) {
+
             echo call_user_func( $this->routes[ $this->request_method ][ $this->uri[0] ], $this->args);
             die;
-        } else {
-            return response('Page not Found', 404);
-        }
 
-		return call_user_func(array($class, $setMethod), $this->args);
+        } else if ( $callable && array_key_exists( $this->uri[0] . '/' . $setMethod, $this->routes[$this->request_method] ) ) {
+
+            echo call_user_func( [$class, $setMethod], $this->args);
+            die;
+
+        } else {
+
+            return response('Page not Found', 404);
+
+        }
+        
     }
 }
