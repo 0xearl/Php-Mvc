@@ -1,13 +1,12 @@
 <?php 
 namespace App;
-use \Closure;
+
 /**
  * @author Earl Sabalo
  * 
  * This class is responsible defining new routes without creating classes;
  * 
  */
-
 
 class WebRouter {
 
@@ -16,8 +15,9 @@ class WebRouter {
     function __construct() {
         $this->routes = [];
     }
+
     /**
-     * This Function Creates A New Route Without Having to Create Controller Class
+     * Create a GET route
      * 
      * @param string $uri the desired uri to request
      * 
@@ -25,8 +25,41 @@ class WebRouter {
      * 
      * @return void 
      */
-    public function createNewRoute($uri, $cb) {
+    public function get($uri, $cb) {
         $uri = str_replace('/', '', $uri);
-        $this->routes[$uri] = $cb;
+
+        $this->routes['GET'][$uri] = $cb;
+    }
+
+    /**
+     * Create a POST route
+     * 
+     * @param string $uri the desired uri to request
+     * 
+     * @param callable $cb a function that needs to be executed
+     * 
+     * @return void
+     */
+    public function post($uri, $cb) {
+        $uri = str_replace('/', '', $uri);
+
+        $this->routes['POST'][$uri] = $cb;
+    }
+
+    /**
+     * Create a resource route
+     *  This has to be rethinked. currently unused.
+     * 
+     * @param string $uri the desired uri to request
+     * 
+     * @param callable $cb a function that needs to be executed
+     * 
+     * @return void
+     */
+    public function resource($uri, $cb) {
+        $uri = str_replace('/', '', $uri);
+
+        $this->routes['GET'][$uri] = $cb;
+        $this->routes['POST'][$uri] = $cb;
     }
 }
