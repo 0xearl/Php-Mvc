@@ -1,4 +1,5 @@
 <?php
+namespace App\Controllers;
 
 use App\Controller;
 use App\Models\TestModel;
@@ -13,9 +14,9 @@ use App\Request;
 class Index extends Controller
 {
 
-    public static function index(Request $request)
+    public static function index()
     {
-        view('index');
+        return view('index', ['name' => 'Earl Sabalo' ]);
     }
 
     public static function test()

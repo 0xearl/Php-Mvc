@@ -1,15 +1,17 @@
 <?php 
-use App\Template;
+
+namespace App\Controllers;
+
 use App\Controller;
 use App\Models\TestModel;
 
-Class Test {
-    function __construct(){
-        $this->template = new Template();
-        $this->model = new TestModel();
-    }
+Class Test extends Controller 
+{
     
-    public function index(){
-        return $this->model->test();
+    public static function index()
+    {
+        $test = new TestModel();
+        $data = $test->test();
+        return view('test', ['name' => $data]);
     }
 }
