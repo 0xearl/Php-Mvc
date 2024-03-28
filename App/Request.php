@@ -2,19 +2,10 @@
 
 namespace App;
 
-/**
- * @author Earl Sabalo
- * 
- * This class Handles all data that are sent by request either by POST or GET
- * 
- * This Is yet to be tested.
- */
-
- use App\Exceptions\RequestException;
+use App\Exceptions\RequestException;
 
 class Request {
     
-
     public $request;
 
     function __construct() {
@@ -23,7 +14,7 @@ class Request {
 
     /**
      * This Function Returns The Value of an input with
-     *              the supplied name.
+     * the supplied name.
      * 
      * @param string $name name of the variable passed in request
      * 
@@ -36,6 +27,11 @@ class Request {
             throw new RequestException('Error: Request Not Found');
         }
 
-        return $this->request[$name];
+        $value = $this->request[$name];
+
+        // Validate and sanitize the input value
+        $value = filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        return $value;
     }
 }
