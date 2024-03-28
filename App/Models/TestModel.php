@@ -9,7 +9,10 @@ use App\Model;
  */
 
  class TestModel Extends Model {
-     public function test() {
+
+    public function test() 
+    {
         return 'test';
-     }
+    }
+    
  }
