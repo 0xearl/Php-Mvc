@@ -10,11 +10,14 @@ namespace App;
  * This Is yet to be tested.
  */
 
+ use App\Exceptions\RequestException;
+
 class Request {
     
-    private $request;
 
-    function construct() {
+    public $request;
+
+    function __construct() {
         $this->request = $_REQUEST;
     }
 
@@ -28,25 +31,11 @@ class Request {
      * 
      * @return mixed
      */
-    public function getInput($name) {
-        switch($this->request) {
-            case 'GET':
-                if(filter_has_var(INPUT_GET, $name)) {
-                    return $_REQUEST[$name];
-                }else{
-                    throw new App\Exceptions\RequestException("Error input $name doesn't exist.");
-                }
-                break;
-            case 'POST':
-                if(filter_has_var(INPUT_POST, $name)) {
-                    return $_REQUEST[$name];
-                }else{
-                    throw new App\Exceptions\RequestException("Error input $name doesn't exist.");
-                }
-                break;
-            default:
-                throw new App\Exceptions\RequestException('Error Something Went Wrong');
-                break;
+    public function get($name) {
+        if(!isset($this->request[$name])) {
+            throw new RequestException('Error: Request Not Found');
         }
+
+        return $this->request[$name];
     }
 }
