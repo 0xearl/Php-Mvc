@@ -1,23 +1,26 @@
 <?php
-use App\Template;
+
 use App\Controller;
 use App\Models\TestModel;
+use App\Request;
+
 /**
  * @author Earl Sabalo
  * 
  * This is Index Controller
  */
 
- class Index extends Controller {
-     function __construct(){
-         $this->template = new Template();
-     }
-     public function index(){
-         $this->template->view('index');
-     }
+class Index extends Controller
+{
 
-     public function test(){
-         $test = new TestModel();
-         return $test->test();
-     }
- }
+    public static function index(Request $request)
+    {
+        view('index');
+    }
+
+    public static function test()
+    {
+        $test = new TestModel();
+        return $test->test();
+    }
+}
