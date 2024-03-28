@@ -25,5 +25,5 @@ function response($data = null, $status = 200) {
 
 function view($view, $data = []) {
     extract($data);
-    include_once('./App/Views/' . $view . '.temp.php');
+    include_once('./views/' . $view . '.temp.php');
 }
