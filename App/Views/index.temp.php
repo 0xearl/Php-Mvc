@@ -6,6 +6,6 @@
     <title>Test</title>
 </head>
 <body>
-    This is a Test.
+    Hello <?= $name ?>
 </body>
 </html>
