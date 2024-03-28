@@ -1,10 +1,13 @@
 <?php 
 namespace App;
+
 /**
  * @author Earl Sabalo
  * 
  * This Class Handles The Templating Function.
  */
+
+ use App\Exceptions\TemplateException;
 
 class Template {
 
@@ -19,9 +22,9 @@ class Template {
     const TEMPLATE_EXTENSION = '.temp.php';
 
 
-    public function view($filename) {
+    public function render($filename) {
         if(!file_exists(self::VIEW_PATH . $filename . self::TEMPLATE_EXTENSION)){
-            throw new App\Exeptions\TemplateException('Error View Doesn\'t Exist.');
+            throw new TemplateException('Error View Doesn\'t Exist.');
         }
         
         return require_once(self::VIEW_PATH . $filename . self::TEMPLATE_EXTENSION);
