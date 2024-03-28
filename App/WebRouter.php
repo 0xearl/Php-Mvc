@@ -26,7 +26,13 @@ class WebRouter {
      * @return void 
      */
     public function get($uri, $cb) {
-        $uri = str_replace('/', '', $uri);
+
+        if ( substr_count($uri, '/') > 1 ) {
+            $uri = ltrim($uri, '/');
+        } else {
+            $uri = str_replace('/', '', $uri);
+        }
+        
 
         $this->routes['GET'][$uri] = $cb;
     }
@@ -41,7 +47,12 @@ class WebRouter {
      * @return void
      */
     public function post($uri, $cb) {
-        $uri = str_replace('/', '', $uri);
+        
+        if ( substr_count($uri, '/') > 1 ) {
+            $uri = ltrim($uri, '/');
+        } else {
+            $uri = str_replace('/', '', $uri);
+        }
 
         $this->routes['POST'][$uri] = $cb;
     }
@@ -52,14 +63,36 @@ class WebRouter {
      * 
      * @param string $uri the desired uri to request
      * 
-     * @param callable $cb a function that needs to be executed
+     * @param object $cb a function that needs to be executed
      * 
      * @return void
      */
-    public function resource($uri, $cb) {
+    public function resource($uri, $class) {
+        $get_methods = [
+            'index',
+            'create',
+            'show',
+            'edit'
+        ];
+
+        $post_methods = [
+            'store',
+            'update',
+            'destroy'
+        ];
+
         $uri = str_replace('/', '', $uri);
 
-        $this->routes['GET'][$uri] = $cb;
-        $this->routes['POST'][$uri] = $cb;
+        $class_methods = get_class_methods($class);
+
+        if ( is_subclass_of($class, 'App\Controller') ) {
+            foreach ($class_methods as $method) {
+                if ( in_array($method, $get_methods) ) {
+                    $this->routes['GET'][$uri . '/' . $method] = [$class, $method];
+                } else if ( in_array($method, $post_methods) ) {
+                    $this->routes['POST'][$uri . '/' . $method] = [$class, $method];
+                }
+            }
+        }
     }
 }
