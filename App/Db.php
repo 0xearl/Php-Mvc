@@ -35,10 +35,21 @@ class Db {
      * @var string $charset Database Character Set
      */
     private $charset = 'utf8mb4';
+
+    /**
+     * @var PDO $connection Database Connection
+     */
+    private $connection;
     
-    function __construct(){
+    /**
+     * @var Db The single instance of the class
+     */
+    protected static $instance = null;
+
+    private function __construct()
+    {
         $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
-        
+
         $options = [
             \PDO::ATTR_ERRMODE               =>  \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE    =>  \PDO::FETCH_ASSOC,
@@ -46,10 +57,23 @@ class Db {
         ];
 
         try {
-            $connection = new \PDO($dsn, $this->user, $this->pass, $options);
-            return $connection;
-        }catch(\PDOException $e){
+            $this->connection = new \PDO($dsn, $this->user, $this->pass, $options);
+        } catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }
