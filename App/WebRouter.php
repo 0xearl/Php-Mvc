@@ -72,13 +72,13 @@ class WebRouter {
             'index',
             'create',
             'show',
-            'edit'
+            'edit',
+            'destroy'
         ];
 
         $post_methods = [
             'store',
             'update',
-            'destroy'
         ];
 
         $uri = str_replace('/', '', $uri);
@@ -88,9 +88,20 @@ class WebRouter {
         if ( is_subclass_of($class, 'App\Controller') ) {
             foreach ($class_methods as $method) {
                 if ( in_array($method, $get_methods) ) {
-                    $this->routes['GET'][$uri . '/' . $method] = [$class, $method];
+
+                    if ( $method == 'index' ) {
+                        $this->routes['GET'][$uri] = [$class, $method];
+                    } else {
+                        $this->routes['GET'][$uri . '/' . $method] = [$class, $method];
+                    }
+
                 } else if ( in_array($method, $post_methods) ) {
-                    $this->routes['POST'][$uri . '/' . $method] = [$class, $method];
+
+                    if ( $method == 'store' ) {
+                        $this->routes['POST'][$uri] = [$class, $method];
+                    } else {
+                        $this->routes['POST'][$uri . '/' . $method] = [$class, $method];
+                    }
                 }
             }
         }
