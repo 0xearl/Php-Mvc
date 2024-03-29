@@ -10,6 +10,7 @@ class Request {
 
     function __construct() {
         $this->request = $_REQUEST;
+        unset($this->request['path']);
     }
 
     /**
@@ -22,7 +23,8 @@ class Request {
      * 
      * @return mixed
      */
-    public function get($name) {
+    public function get($name) 
+    {
         if(!isset($this->request[$name])) {
             throw new RequestException('Error: Request Not Found');
         }
@@ -33,5 +35,10 @@ class Request {
         $value = filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         return $value;
+    }
+
+    public function all() 
+    {
+        return $this->request;
     }
 }
