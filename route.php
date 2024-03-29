@@ -3,6 +3,7 @@
 use App\Route;
 use App\Controllers\Index;
 use App\Controllers\Test;
+use App\Controllers\Crud;
 
 /**
  * @author Earl Sabalo
@@ -25,6 +26,6 @@ $routes->get('/', [Index::class, 'index']);
 $routes->get('/index/test', [Index::class, 'test']);
 $routes->get('/test', [Test::class, 'index']);
 $routes->resource('/resource', App\Controllers\Resource::class);
-
+$routes->resource('/add-user', Crud::class);
 
 $routes->loadRoutes();
