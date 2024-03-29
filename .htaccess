@@ -1,3 +1,15 @@
+# Deny access to .git directory
+RewriteRule ^\.git /404 [R=301,L]
+
+# Deny access to .editorconfig and README.md
+RewriteCond %{REQUEST_URI} \.editorconfig$ [OR]
+RewriteCond %{REQUEST_URI} README\.md$
+RewriteRule .* /404 [R=301,L]
+
+# Deny access to all PHP files
+RewriteCond %{REQUEST_URI} \.php$
+RewriteRule !^index\.php$ /404 [R=301,L]
+
 RewriteEngine On
 #RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
