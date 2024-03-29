@@ -27,3 +27,12 @@ function view($view, $data = []) {
     extract($data);
     include_once('./views/' . $view . '.temp.php');
 }
+
+function redirect($url) {
+    http_response_code(301);
+    header('Location: ' . $url);
+}
+
+function session() {
+    return new App\Session();
+}
