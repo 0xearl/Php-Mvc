@@ -43,13 +43,13 @@
     <main class="container-fluid">
         <div style="padding: 4rem 2rem; background-color: #e9ecef;">
             <h1 class="display-3">Hello, world!</h1>
-            <p class="lead">Welcome to my simple MVC framework built from scratch and heavily influenced by <a target="_blank" href="https://laravel.com/">Laravel</a>.</p>
+            <p class="lead">Welcome to my simple MVC framework built from scratch and heavily influenced by <a target="_blank" href="https://laravel.com/">Laravel</a> and based on <a target="_blank" href="https://github.com/dbphpd/oopmvc">OOPMVC</a> from sir Jun.</p>
             <hr class="my-2">
             <div class="my-2">
                 Here's a snippet of the code used here:
                 <div class="p-2">
                     <?php
-                        highlight_file('./index.php');
+                        highlight_file('./route.php');
                     ?>
                 </div>
                 <hr class="my-2">
