@@ -1,6 +1,8 @@
 <?php 
 namespace App;
 
+use Interfaces\MiddlewareInterface;
+
 /**
  * @author Earl Sabalo
  * 
@@ -23,7 +25,7 @@ class WebRouter {
      * 
      * @param callable $cb a function that needs to be executed
      * 
-     * @return void 
+     * @return $this 
      */
     public function get($uri, $cb) {
 
@@ -35,6 +37,8 @@ class WebRouter {
         
 
         $this->routes['GET'][$uri] = $cb;
+
+        return $this;
     }
 
     /**
@@ -44,7 +48,7 @@ class WebRouter {
      * 
      * @param callable $cb a function that needs to be executed
      * 
-     * @return void
+     * @return $this
      */
     public function post($uri, $cb) {
         
@@ -55,6 +59,8 @@ class WebRouter {
         }
 
         $this->routes['POST'][$uri] = $cb;
+
+        return $this;
     }
 
     /**
@@ -65,7 +71,7 @@ class WebRouter {
      * 
      * @param object $cb a function that needs to be executed
      * 
-     * @return void
+     * @return $this
      */
     public function resource($uri, $class) {
         $get_methods = [
@@ -105,5 +111,19 @@ class WebRouter {
                 }
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * TODO: fix implementation of middleware
+     * This adds middlewares to the routes
+     * 
+     * @param MiddlewareInterface $middleware
+     * 
+     * @return response()
+     */
+    public function middleware(MiddlewareInterface $middleware) {
+        return $middleware->call();
     }
 }
