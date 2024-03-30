@@ -4,6 +4,7 @@ use App\Route;
 use App\Controllers\Index;
 use App\Controllers\Test;
 use App\Controllers\Crud;
+use App\Controllers\DynamicRoute;
 
 /**
  * @author Earl Sabalo
@@ -27,5 +28,11 @@ $routes->get('/index/test', [Index::class, 'test']);
 $routes->get('/test', [Test::class, 'index']);
 $routes->resource('/resource', App\Controllers\Resource::class);
 $routes->resource('/add-user', Crud::class);
+$routes->get('/test/(\d)', function ($id) {
+    echo "ID: $id";
+});
+
+$routes->get('/dynamic-route/(\d)', [DynamicRoute::class, 'index']);
+$routes->get('/dynamic-route/show/(\w+)', [DynamicRoute::class, 'show']);
 
 $routes->loadRoutes();
