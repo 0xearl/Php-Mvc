@@ -37,6 +37,12 @@ class Crud extends Controller
 
     public static function show(Request $request)
     {
+
+        if ( ! $request->has('id') ) {
+            session()->set('error', 'Error: User not found');
+            return redirect('/add-user');
+        }
+
         $user_id = (int) $request->get('id');
 
         $user = new UserModel();
@@ -49,6 +55,11 @@ class Crud extends Controller
 
     public static function update(Request $request)
     {
+        if ( ! $request->has('id') ) {
+            session()->set('error', 'Error: User not found');
+            return redirect('/add-user');
+        }
+
         $user_id = (int) $request->get('id');
 
         $user = new UserModel();
@@ -71,6 +82,11 @@ class Crud extends Controller
 
     public static function destroy(Request $request)
     {
+        if ( ! $request->has('id') ) {
+            session()->set('error', 'Error: User not found');
+            return redirect('/add-user');
+        }
+        
         $user_id = (int) $request->get('id');
         $model = new UserModel();
 
