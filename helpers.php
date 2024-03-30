@@ -11,7 +11,7 @@ function dd($data) {
     die();
 }
 
-function response($data = null, $status = 200) {
+function response($status = 200, $data = null) {
     
     if ($status === 404) {
         http_response_code($status);
