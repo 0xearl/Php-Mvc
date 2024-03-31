@@ -31,18 +31,8 @@
             <div class="row" style="width: 100%;">
 
                 <div class="col m-2 p-2">
-                    <?php if (session()->has('error')) : ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?= session()->get('error') ?>
-                            <?php session()->remove('error') ?>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (session()->has('success')) : ?>
-                        <div class="alert alert-success" role="alert">
-                            <?= session()->get('success') ?>
-                            <?php session()->remove('success') ?>
-                        </div>
-                    <?php endif; ?>
+                    <?php flash('danger'); ?>
+                    <?php flash('success'); ?>
                     <form method="POST" action="/add-user">
                         <div class="form-group">
                             <label for="nameInput">Name</label>
