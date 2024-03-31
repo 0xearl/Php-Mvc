@@ -18,83 +18,43 @@ class Route extends WebRouter {
      */
     protected $uri;
 
-    protected $args;
-
     protected $request_method;
-
-    private $matched_route;
 	
 	function __construct() 
     {
         parent::__construct();
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->uri = preg_replace('/\?.*/', '', $this->uri); // Remove Query String
-        $this->args = null;
         $this->request_method = $_SERVER['REQUEST_METHOD'];
 	}
 
 	public function loadRoutes()
     {
 
-        $uri = $this->uri;
-        if ( substr_count($this->uri, '/') > 1 ) {
-            $uri = ltrim($this->uri, '/');
+        $matched_route = $this->match();
+
+        if ( $matched_route[1] ) {
+            return call_user_func( $matched_route[0], $matched_route[1] );
         } else {
-            $uri = str_replace('/', '', $this->uri);
-        }
-
-        if( array_key_exists( $uri, $this->routes[$this->request_method] ) ) {
-
-            echo call_user_func( $this->routes[ $this->request_method ][ $uri ], $this->args);
-            die;
-
-        } else if ( $this->match() ) {
-
-            $this->dispatcher();
-
-        } else {
-
-            return response(404);
-
+            return call_user_func( $matched_route[0], new Request() );
         }
     }
 
     public function match()
     {
-        foreach( $this->routes[$this->request_method] as $route => $cb ) {
-            if( str_contains( $route, "(\d)" ) || str_contains(  $route, "(\w+)" ) ) {
-                $uri = str_replace('/', '\/', $route);
-                $pattern = "/$uri/";
+        if (!isset($this->routes[$this->request_method])) {
+            return null;
+        }
 
-                if( preg_match($pattern, $this->uri, $matches) ) {
-                    if ( count( $matches ) > 1 ) {
-                        $this->matched_route = $route;
-        
-                        $this->args = $matches[1];
-        
-                    } else {
-        
-                        $this->matched_route = $route;
-                        $this->args = new Request();
-        
-                    }
-                    return true;
-                }
+        foreach ($this->routes[$this->request_method] as $route => $action) {
+            $matchResult = preg_match('/^' . $route . '$/', $this->uri, $matches);
+            if ($matchResult) {
+                array_shift($matches); // Remove the first element from $matches
+                $param = reset($matches);
+                return [$action, $param];
             }
         }
 
-        return false;
-    }
-
-    public function dispatcher()
-    {
-
-        if ( array_key_exists( $this->matched_route, $this->routes[$this->request_method] ) ) {
-            
-            echo call_user_func( $this->routes[ $this->request_method ][ $this->matched_route ], $this->args);
-            die;
-        }
-
-        return response(404);
+        return null;
     }
 }
