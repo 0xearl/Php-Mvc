@@ -36,3 +36,10 @@ function redirect($url) {
 function session() {
     return new App\Session();
 }
+
+function flash($key) {
+    if ( session()->has( $key ) ) {
+        echo "<div class='alert alert-{$key}' role='alert'>" . session()->get($key) . "</div>";
+        session()->remove($key);
+    }
+}
