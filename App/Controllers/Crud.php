@@ -31,7 +31,7 @@ class Crud extends Controller
             return redirect('/add-user');
         }
 
-        session()->set('error', 'Error: Unable to create user');
+        session()->set('danger', 'Error: Unable to create user');
         return redirect('/add-user');
     }
 
@@ -39,7 +39,7 @@ class Crud extends Controller
     {
 
         if ( ! $request->has('id') ) {
-            session()->set('error', 'Error: User not found');
+            session()->set('danger', 'Error: User not found');
             return redirect('/add-user');
         }
 
@@ -48,6 +48,12 @@ class Crud extends Controller
         $user = new UserModel();
 
         $user = $user->find($user_id);
+
+        if ( ! $user ) {
+            session()->set('danger', 'Error: User not found');
+            return redirect('/add-user');
+        }
+
         $user['password'] = '';
 
         return view('crud/edit', ['user' => $user]);
@@ -56,7 +62,7 @@ class Crud extends Controller
     public static function update(Request $request)
     {
         if ( ! $request->has('id') ) {
-            session()->set('error', 'Error: User not found');
+            session()->set('danger', 'Error: User not found');
             return redirect('/add-user');
         }
 
@@ -76,14 +82,14 @@ class Crud extends Controller
             return redirect('/add-user');
         }
 
-        session()->set('error', 'Error: Unable to update user');
+        session()->set('danger', 'Error: Unable to update user');
         return redirect('/add-user');
     }
 
     public static function destroy(Request $request)
     {
         if ( ! $request->has('id') ) {
-            session()->set('error', 'Error: User not found');
+            session()->set('danger', 'Error: User not found');
             return redirect('/add-user');
         }
         
@@ -97,7 +103,7 @@ class Crud extends Controller
             return redirect('/add-user');
         }
         
-        session()->set('error', 'Error: Unable to delete user');
+        session()->set('danger', 'Error: Unable to delete user');
         return redirect('/add-user');
     }
 }
