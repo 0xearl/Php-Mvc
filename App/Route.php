@@ -33,10 +33,18 @@ class Route extends WebRouter {
 
         $matched_route = $this->match();
 
+        if ( $matched_route === null ) {
+            return response(404);
+        }
+
         if ( $matched_route[1] ) {
+            
             return call_user_func( $matched_route[0], $matched_route[1] );
+
         } else {
+
             return call_user_func( $matched_route[0], new Request() );
+            
         }
     }
 
