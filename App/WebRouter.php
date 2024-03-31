@@ -29,13 +29,9 @@ class WebRouter {
      */
     public function get($uri, $cb) {
 
-        if ( substr_count($uri, '/') > 1 ) {
-            $uri = ltrim($uri, '/');
-        } else {
-            $uri = str_replace('/', '', $uri);
-        }
+        $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
+        $uri = str_replace('/', '\/', $uri);
         
-
         $this->routes['GET'][$uri] = $cb;
 
         return $this;
@@ -52,11 +48,8 @@ class WebRouter {
      */
     public function post($uri, $cb) {
         
-        if ( substr_count($uri, '/') > 1 ) {
-            $uri = ltrim($uri, '/');
-        } else {
-            $uri = str_replace('/', '', $uri);
-        }
+        $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
+        $uri = str_replace('/', '\/', $uri);
 
         $this->routes['POST'][$uri] = $cb;
 
@@ -87,7 +80,8 @@ class WebRouter {
             'update',
         ];
 
-        $uri = str_replace('/', '', $uri);
+        $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
+        $uri = str_replace('/', '\/', $uri);
 
         $class_methods = get_class_methods($class);
 
@@ -98,7 +92,7 @@ class WebRouter {
                     if ( $method == 'index' ) {
                         $this->routes['GET'][$uri] = [$class, $method];
                     } else {
-                        $this->routes['GET'][$uri . '/' . $method] = [$class, $method];
+                        $this->routes['GET'][$uri . '\/' . $method] = [$class, $method];
                     }
 
                 } else if ( in_array($method, $post_methods) ) {
@@ -106,7 +100,7 @@ class WebRouter {
                     if ( $method == 'store' ) {
                         $this->routes['POST'][$uri] = [$class, $method];
                     } else {
-                        $this->routes['POST'][$uri . '/' . $method] = [$class, $method];
+                        $this->routes['POST'][$uri . '\/' . $method] = [$class, $method];
                     }
                 }
             }
