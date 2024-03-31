@@ -28,11 +28,11 @@ $routes->get('/index/test', [Index::class, 'test']);
 $routes->get('/test', [Test::class, 'index']);
 $routes->resource('/resource', App\Controllers\Resource::class);
 $routes->resource('/add-user', Crud::class);
-$routes->get('/test/(\d)', function ($id) {
+$routes->get('/test/{id}', function ($id) {
     echo "ID: $id";
 });
 
-$routes->get('/dynamic-route/(\d)', [DynamicRoute::class, 'index']);
-$routes->get('/dynamic-route/show/(\w+)', [DynamicRoute::class, 'show']);
+$routes->get('/dynamic-route/{id}', [DynamicRoute::class, 'index']);
+$routes->get('/dynamic-route/show/{name}', [DynamicRoute::class, 'show']);
 
 $routes->loadRoutes();
