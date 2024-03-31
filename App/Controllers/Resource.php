@@ -21,16 +21,16 @@ class Resource extends Controller
 
     public static function show()
     {
-        return 'this is view';
+        echo 'this is view';
     }
 
     public static function store(Request $request)
     {
-        return 'this is store';
+        echo 'this is store';
     }
 
     public static function update(Request $request)
     {
-        return 'this is update';
+        echo 'this is update';
     }
 }
