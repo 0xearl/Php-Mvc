@@ -14,8 +14,13 @@ class WebRouter {
 
     public $routes;
 
+    public $middlewares;
+
+    protected $route_uri;
+
     function __construct() {
         $this->routes = [];
+        $this->middlewares = [];
     }
 
     /**
@@ -27,10 +32,11 @@ class WebRouter {
      * 
      * @return $this 
      */
-    public function get($uri, $cb) {
-
+    public function get($uri, $cb) 
+    {
         $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
         $uri = str_replace('/', '\/', $uri);
+        $this->route_uri = $uri;
         
         $this->routes['GET'][$uri] = $cb;
 
@@ -46,11 +52,12 @@ class WebRouter {
      * 
      * @return $this
      */
-    public function post($uri, $cb) {
+    public function post($uri, $cb) 
+    {
         
         $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
         $uri = str_replace('/', '\/', $uri);
-
+        $this->route_uri = $uri;
         $this->routes['POST'][$uri] = $cb;
 
         return $this;
@@ -66,7 +73,8 @@ class WebRouter {
      * 
      * @return $this
      */
-    public function resource($uri, $class) {
+    public function resource($uri, $class) 
+    {
         $get_methods = [
             'index',
             'create',
@@ -82,6 +90,8 @@ class WebRouter {
 
         $uri = preg_replace('/\{([a-z]+)\}/', '(?P<$1>\w+)', $uri);
         $uri = str_replace('/', '\/', $uri);
+
+        $this->route_uri = $uri;
 
         $class_methods = get_class_methods($class);
 
@@ -117,7 +127,8 @@ class WebRouter {
      * 
      * @return response()
      */
-    public function middleware(MiddlewareInterface $middleware) {
-        return $middleware->call();
+    public function middleware(MiddlewareInterface $middleware) 
+    {
+        $this->middlewares[$this->route_uri] = $middleware;
     }
 }
