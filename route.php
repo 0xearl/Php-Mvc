@@ -5,6 +5,7 @@ use App\Controllers\Index;
 use App\Controllers\Test;
 use App\Controllers\Crud;
 use App\Controllers\DynamicRoute;
+use App\Middlewares\ShouldAuthenticate;
 
 /**
  * @author Earl Sabalo
@@ -34,5 +35,9 @@ $routes->get('/test/{id}', function ($id) {
 
 $routes->get('/dynamic-route/{id}', [DynamicRoute::class, 'index']);
 $routes->get('/dynamic-route/show/{name}', [DynamicRoute::class, 'show']);
+$routes->get('/dynamic-route/{id}/show/{name}', function($id, $name) {
+    echo "ID: $id, Name: $name";
+})->middleware( new ShouldAuthenticate() );
+
 
 $routes->loadRoutes();
